@@ -1,19 +1,12 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      docker: 18
   pre_build:
     commands:
       # Retrieve login credentials for Amazon ECR
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 818779533109.dkr.ecr.ap-south-1.amazonaws.com
   build:
     commands:
-      # Pull code from GitHub repository
-      - git clone https://github.com/ThanmayiP30/deploy/.git
-      # Change directory to the cloned repository
-      - cd deploy
       # Build Docker image
       - docker build -t demo .
       # Tag Docker image with ECR repository URI
