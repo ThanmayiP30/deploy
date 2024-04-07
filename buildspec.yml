@@ -5,15 +5,20 @@ phases:
     commands:
       # Retrieve login credentials for Amazon ECR
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 818779533109.dkr.ecr.ap-south-1.amazonaws.com
+
   build:
     commands:
       # Build Docker image
       - docker build -t demo .
       # Tag Docker image with ECR repository URI
       - docker tag demo:latest 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
+
   post_build:
     commands:
       # Push Docker image to Amazon ECR
       - docker push 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
 
-
+artifacts:
+  files:
+    - imagedefinitions.json
+    - target/spring_todo.war
