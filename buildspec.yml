@@ -1,15 +1,28 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      # Retrieve login credentials for Amazon ECR
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 818779533109.dkr.ecr.ap-south-1.amazonaws.com
   build:
     commands:
-      - echo Build started on `date`
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/demo:latest .
+      # Pull code from GitHub repository
+      - git clone https://github.com/ThanmayiP30/deploy/.git
+      # Change directory to the cloned repository
+      - cd your-repository
+      # Build Docker image
+      - docker build -t demo .
+      # Tag Docker image with ECR repository URI
+      - docker tag demo:latest 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
   post_build:
     commands:
-      - printf '[{"name":"demo","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
-
-artifacts:
+      # Push Docker image to Amazon ECR
+      - docker push 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
+      artifacts:
   files:
     - imagedefinitions.json
+
