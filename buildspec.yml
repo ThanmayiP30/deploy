@@ -13,7 +13,7 @@ phases:
       # Pull code from GitHub repository
       - git clone https://github.com/ThanmayiP30/deploy/.git
       # Change directory to the cloned repository
-      - cd your-repository
+      - cd deploy
       # Build Docker image
       - docker build -t demo .
       # Tag Docker image with ECR repository URI
@@ -22,7 +22,7 @@ phases:
     commands:
       # Push Docker image to Amazon ECR
       - docker push 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
-      artifacts:
+
+artifacts:
   files:
     - imagedefinitions.json
-
