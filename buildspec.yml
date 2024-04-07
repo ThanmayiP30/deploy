@@ -5,6 +5,6 @@ phases:
     commands:
       - echo Build started on `date`
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 818779533109.dkr.ecr.ap-south-1.amazonaws.com
-      - docker build -t 818779533109.dkr.ecr.ap-south-1.amazonaws.com/digital:latest .
-      - docker push 818779533109.dkr.ecr.ap-south-1.amazonaws.com/digital:latest
+      - docker build -t 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest .
+      - docker push 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
 
