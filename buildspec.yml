@@ -6,5 +6,11 @@ phases:
       - echo Build started on `date`
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 818779533109.dkr.ecr.ap-south-1.amazonaws.com
       - docker build -t 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest .
-      - docker push 818779533109.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
+      phase:
+  post_build:
+    commands:
+      - printf '[{"name":"your.task.definition.container.name","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files: imagedefinitions.json
 
